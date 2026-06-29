@@ -57,7 +57,7 @@ Riot / 腾讯 / Vanguard 的规则和检测策略可能变化，最终解释权�
 已发布的本地可执行文件位于：
 
 ```text
-bin\Release\net9.0-windows\win-x64\publish\EmergencyStop.exe
+src\EmergencyStop\bin\Release\net9.0-windows\win-x64\publish\EmergencyStop.exe
 ```
 
 运行后程序默认进入托盘，并显示屏幕中心覆盖层。右键托盘图标可以打开设置窗口。
@@ -84,27 +84,32 @@ bin\Release\net9.0-windows\win-x64\publish\EmergencyStop.exe
 构建：
 
 ```powershell
-dotnet build
+dotnet build EmergencyStop.sln
 ```
 
 发布 Windows x64 自包含版本：
 
 ```powershell
-dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
+dotnet publish src\EmergencyStop\EmergencyStop.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
 ```
 
 ## 项目结构
 
 ```text
-App.xaml / App.xaml.cs              应用启动、托盘、覆盖层生命周期
-OverlayWindow.xaml                  屏幕中心覆盖层 UI
-OverlayViewModel.cs                 覆盖层显示状态
-MovementStateService.cs             移动键状态机
-RawInputKeyboardListener.cs         Raw Input 键盘监听
-KeyboardStatePoller.cs              物理按键状态轮询
-SettingsWindow.xaml                 设置窗口
-SettingsStore.cs                    本地配置读写
-TrayService.cs                      系统托盘菜单
+EmergencyStop.sln
+README.md
+src/
+  EmergencyStop/
+    EmergencyStop.csproj
+    App.xaml / App.xaml.cs              应用启动、托盘、覆盖层生命周期
+    OverlayWindow.xaml                  屏幕中心覆盖层 UI
+    OverlayViewModel.cs                 覆盖层显示状态
+    MovementStateService.cs             移动键状态机
+    RawInputKeyboardListener.cs         Raw Input 键盘监听
+    KeyboardStatePoller.cs              物理按键状态轮询
+    SettingsWindow.xaml                 设置窗口
+    SettingsStore.cs                    本地配置读写
+    TrayService.cs                      系统托盘菜单
 ```
 
 ## 急停估算说明
