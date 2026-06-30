@@ -6,7 +6,7 @@ namespace EmergencyStop;
 
 public sealed class SettingsStore
 {
-    private const int CurrentSettingsVersion = 3;
+    private const int CurrentSettingsVersion = 7;
 
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -52,24 +52,61 @@ public sealed class SettingsStore
     private static AppSettings FromDto(SettingsDto dto)
     {
         var settings = AppSettings.CreateDefault();
+        var version = dto.SettingsVersion ?? 0;
+
         settings.ForwardKey = ParseKey(dto.ForwardKey, settings.ForwardKey);
         settings.BackwardKey = ParseKey(dto.BackwardKey, settings.BackwardKey);
         settings.LeftKey = ParseKey(dto.LeftKey, settings.LeftKey);
         settings.RightKey = ParseKey(dto.RightKey, settings.RightKey);
         settings.IsOverlayVisible = dto.IsOverlayVisible ?? settings.IsOverlayVisible;
         settings.IsClickThrough = dto.IsClickThrough ?? settings.IsClickThrough;
-        settings.ShowDirectionPad = dto.SettingsVersion >= CurrentSettingsVersion
+        settings.ShowMovementBars = dto.ShowMovementBars ?? settings.ShowMovementBars;
+        settings.ShowDirectionPad = version >= 5
             ? dto.ShowDirectionPad ?? settings.ShowDirectionPad
             : false;
-        settings.OpenSettingsOnStartup = dto.SettingsVersion >= CurrentSettingsVersion
+        settings.ShowOuterRing = dto.ShowOuterRing ?? settings.ShowOuterRing;
+        settings.ShowStatusBadge = dto.ShowStatusBadge ?? settings.ShowStatusBadge;
+        settings.ShowCenterCrosshair = version >= 5
+            ? dto.ShowCenterCrosshair ?? settings.ShowCenterCrosshair
+            : true;
+        settings.ShowCenterDot = dto.ShowCenterDot ?? settings.ShowCenterDot;
+        settings.ShowOuterCrosshairLines = dto.ShowOuterCrosshairLines ?? settings.ShowOuterCrosshairLines;
+        settings.FadeCrosshairWhileMoving = dto.FadeCrosshairWhileMoving ?? settings.FadeCrosshairWhileMoving;
+        settings.OpenSettingsOnStartup = version >= 5
             ? dto.OpenSettingsOnStartup ?? settings.OpenSettingsOnStartup
             : false;
-        settings.IndicatorSize = dto.SettingsVersion >= CurrentSettingsVersion
+        settings.SettingsLanguage = ParseEnum(dto.SettingsLanguage, settings.SettingsLanguage);
+        settings.IndicatorSize = version >= 5
             ? dto.IndicatorSize ?? settings.IndicatorSize
             : Math.Min(dto.IndicatorSize ?? settings.IndicatorSize, 136);
-        settings.OverlayOpacity = dto.SettingsVersion >= CurrentSettingsVersion
+        settings.OverlayOpacity = version >= 5
             ? dto.OverlayOpacity ?? settings.OverlayOpacity
             : Math.Min(dto.OverlayOpacity ?? settings.OverlayOpacity, 0.82);
+        settings.OuterRingSize = dto.OuterRingSize ?? settings.OuterRingSize;
+        settings.OuterRingThickness = dto.OuterRingThickness ?? settings.OuterRingThickness;
+        settings.OuterRingOpacity = dto.OuterRingOpacity ?? settings.OuterRingOpacity;
+        settings.MovementBarsOpacity = dto.MovementBarsOpacity ?? settings.MovementBarsOpacity;
+        settings.CenterCrosshairOpacity = version >= 5
+            ? dto.CenterCrosshairOpacity ?? settings.CenterCrosshairOpacity
+            : settings.CenterCrosshairOpacity;
+        settings.MovingCrosshairOpacity = dto.MovingCrosshairOpacity ?? settings.MovingCrosshairOpacity;
+        settings.CrosshairSize = dto.CrosshairSize ?? settings.CrosshairSize;
+        settings.CrosshairThickness = dto.CrosshairThickness ?? settings.CrosshairThickness;
+        settings.CrosshairGap = dto.CrosshairGap ?? settings.CrosshairGap;
+        settings.CrosshairOutlineThickness = dto.CrosshairOutlineThickness ?? settings.CrosshairOutlineThickness;
+        settings.CrosshairOutlineOpacity = dto.CrosshairOutlineOpacity ?? settings.CrosshairOutlineOpacity;
+        settings.CrosshairCenterDotSize = dto.CrosshairCenterDotSize ?? settings.CrosshairCenterDotSize;
+        settings.CrosshairCenterDotOpacity = dto.CrosshairCenterDotOpacity ?? settings.CrosshairCenterDotOpacity;
+        settings.OuterCrosshairSize = dto.OuterCrosshairSize ?? settings.OuterCrosshairSize;
+        settings.OuterCrosshairThickness = dto.OuterCrosshairThickness ?? settings.OuterCrosshairThickness;
+        settings.OuterCrosshairGap = dto.OuterCrosshairGap ?? settings.OuterCrosshairGap;
+        settings.OuterCrosshairOpacity = dto.OuterCrosshairOpacity ?? settings.OuterCrosshairOpacity;
+        settings.CrosshairRed = dto.CrosshairRed ?? settings.CrosshairRed;
+        settings.CrosshairGreen = dto.CrosshairGreen ?? settings.CrosshairGreen;
+        settings.CrosshairBlue = dto.CrosshairBlue ?? settings.CrosshairBlue;
+        settings.CrosshairStyle = ParseEnum(dto.CrosshairStyle, settings.CrosshairStyle);
+        settings.CrosshairColorPreset = ParseEnum(dto.CrosshairColorPreset, settings.CrosshairColorPreset);
+        settings.OuterRingStyle = ParseEnum(dto.OuterRingStyle, settings.OuterRingStyle);
         settings.ReleaseStopMilliseconds = dto.ReleaseStopMilliseconds ?? settings.ReleaseStopMilliseconds;
         settings.CounterStopMilliseconds = dto.CounterStopMilliseconds ?? settings.CounterStopMilliseconds;
         settings.ReadyFlashMilliseconds = dto.ReadyFlashMilliseconds ?? settings.ReadyFlashMilliseconds;
@@ -89,10 +126,41 @@ public sealed class SettingsStore
             RightKey = settings.RightKey.ToString(),
             IsOverlayVisible = settings.IsOverlayVisible,
             IsClickThrough = settings.IsClickThrough,
+            ShowMovementBars = settings.ShowMovementBars,
             ShowDirectionPad = settings.ShowDirectionPad,
+            ShowOuterRing = settings.ShowOuterRing,
+            ShowStatusBadge = settings.ShowStatusBadge,
+            ShowCenterCrosshair = settings.ShowCenterCrosshair,
+            ShowCenterDot = settings.ShowCenterDot,
+            ShowOuterCrosshairLines = settings.ShowOuterCrosshairLines,
+            FadeCrosshairWhileMoving = settings.FadeCrosshairWhileMoving,
             OpenSettingsOnStartup = settings.OpenSettingsOnStartup,
+            SettingsLanguage = settings.SettingsLanguage.ToString(),
             IndicatorSize = settings.IndicatorSize,
             OverlayOpacity = settings.OverlayOpacity,
+            OuterRingSize = settings.OuterRingSize,
+            OuterRingThickness = settings.OuterRingThickness,
+            OuterRingOpacity = settings.OuterRingOpacity,
+            MovementBarsOpacity = settings.MovementBarsOpacity,
+            CenterCrosshairOpacity = settings.CenterCrosshairOpacity,
+            MovingCrosshairOpacity = settings.MovingCrosshairOpacity,
+            CrosshairSize = settings.CrosshairSize,
+            CrosshairThickness = settings.CrosshairThickness,
+            CrosshairGap = settings.CrosshairGap,
+            CrosshairOutlineThickness = settings.CrosshairOutlineThickness,
+            CrosshairOutlineOpacity = settings.CrosshairOutlineOpacity,
+            CrosshairCenterDotSize = settings.CrosshairCenterDotSize,
+            CrosshairCenterDotOpacity = settings.CrosshairCenterDotOpacity,
+            OuterCrosshairSize = settings.OuterCrosshairSize,
+            OuterCrosshairThickness = settings.OuterCrosshairThickness,
+            OuterCrosshairGap = settings.OuterCrosshairGap,
+            OuterCrosshairOpacity = settings.OuterCrosshairOpacity,
+            CrosshairRed = settings.CrosshairRed,
+            CrosshairGreen = settings.CrosshairGreen,
+            CrosshairBlue = settings.CrosshairBlue,
+            CrosshairStyle = settings.CrosshairStyle.ToString(),
+            CrosshairColorPreset = settings.CrosshairColorPreset.ToString(),
+            OuterRingStyle = settings.OuterRingStyle.ToString(),
             ReleaseStopMilliseconds = settings.ReleaseStopMilliseconds,
             CounterStopMilliseconds = settings.CounterStopMilliseconds,
             ReadyFlashMilliseconds = settings.ReadyFlashMilliseconds,
@@ -106,6 +174,12 @@ public sealed class SettingsStore
         return Enum.TryParse(value, true, out Key key) ? key : fallback;
     }
 
+    private static T ParseEnum<T>(string? value, T fallback)
+        where T : struct, Enum
+    {
+        return Enum.TryParse(value, true, out T result) ? result : fallback;
+    }
+
     private sealed class SettingsDto
     {
         public int? SettingsVersion { get; set; }
@@ -115,10 +189,41 @@ public sealed class SettingsStore
         public string? RightKey { get; set; }
         public bool? IsOverlayVisible { get; set; }
         public bool? IsClickThrough { get; set; }
+        public bool? ShowMovementBars { get; set; }
         public bool? ShowDirectionPad { get; set; }
+        public bool? ShowOuterRing { get; set; }
+        public bool? ShowStatusBadge { get; set; }
+        public bool? ShowCenterCrosshair { get; set; }
+        public bool? ShowCenterDot { get; set; }
+        public bool? ShowOuterCrosshairLines { get; set; }
+        public bool? FadeCrosshairWhileMoving { get; set; }
         public bool? OpenSettingsOnStartup { get; set; }
+        public string? SettingsLanguage { get; set; }
         public double? IndicatorSize { get; set; }
         public double? OverlayOpacity { get; set; }
+        public double? OuterRingSize { get; set; }
+        public double? OuterRingThickness { get; set; }
+        public double? OuterRingOpacity { get; set; }
+        public double? MovementBarsOpacity { get; set; }
+        public double? CenterCrosshairOpacity { get; set; }
+        public double? MovingCrosshairOpacity { get; set; }
+        public double? CrosshairSize { get; set; }
+        public double? CrosshairThickness { get; set; }
+        public double? CrosshairGap { get; set; }
+        public double? CrosshairOutlineThickness { get; set; }
+        public double? CrosshairOutlineOpacity { get; set; }
+        public double? CrosshairCenterDotSize { get; set; }
+        public double? CrosshairCenterDotOpacity { get; set; }
+        public double? OuterCrosshairSize { get; set; }
+        public double? OuterCrosshairThickness { get; set; }
+        public double? OuterCrosshairGap { get; set; }
+        public double? OuterCrosshairOpacity { get; set; }
+        public int? CrosshairRed { get; set; }
+        public int? CrosshairGreen { get; set; }
+        public int? CrosshairBlue { get; set; }
+        public string? CrosshairStyle { get; set; }
+        public string? CrosshairColorPreset { get; set; }
+        public string? OuterRingStyle { get; set; }
         public int? ReleaseStopMilliseconds { get; set; }
         public int? CounterStopMilliseconds { get; set; }
         public int? ReadyFlashMilliseconds { get; set; }

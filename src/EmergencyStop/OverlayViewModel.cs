@@ -17,6 +17,13 @@ public sealed class OverlayViewModel : INotifyPropertyChanged
     private static readonly Brush ConflictBrush = FrozenBrush("#C084FC");
     private static readonly Brush NeutralBrush = FrozenBrush("#D7DEE8");
     private static readonly Brush InactiveBrush = FrozenBrush("#20303A");
+    private static readonly Brush CenterCrosshairOutlineBrush = FrozenBrush("#061018");
+    private static readonly Brush CyanCrosshairBrush = FrozenBrush("#00E5FF");
+    private static readonly Brush GreenCrosshairBrush = FrozenBrush("#45F08A");
+    private static readonly Brush WhiteCrosshairBrush = FrozenBrush("#F7FBFF");
+    private static readonly Brush YellowCrosshairBrush = FrozenBrush("#FFD84D");
+    private static readonly Brush RedCrosshairBrush = FrozenBrush("#FF4F68");
+    private static readonly Brush PurpleCrosshairBrush = FrozenBrush("#C084FC");
 
     private readonly AppSettings _settings;
     private readonly MovementStateService _movementState;
@@ -42,6 +49,48 @@ public sealed class OverlayViewModel : INotifyPropertyChanged
 
     public double OverlayOpacity => _settings.OverlayOpacity;
 
+    public double OuterRingSize => _settings.OuterRingSize;
+
+    public double OuterRingThickness => _settings.OuterRingThickness;
+
+    public double OuterRingOpacity => _settings.OuterRingOpacity;
+
+    public double MovementBarsOpacity => _settings.MovementBarsOpacity;
+
+    public double CenterCrosshairOpacity => _settings.CenterCrosshairOpacity;
+
+    public double CrosshairEffectiveOpacity => ShouldFadeCrosshair ? _settings.MovingCrosshairOpacity : _settings.CenterCrosshairOpacity;
+
+    public double CrosshairSize => _settings.CrosshairSize;
+
+    public double CrosshairThickness => _settings.CrosshairThickness;
+
+    public double CrosshairGap => _settings.CrosshairGap;
+
+    public double CrosshairOutlineThickness => _settings.CrosshairOutlineThickness;
+
+    public double CrosshairOutlineOpacity => _settings.CrosshairOutlineOpacity;
+
+    public bool ShowCenterDot => _settings.ShowCenterDot;
+
+    public double CrosshairCenterDotSize => _settings.CrosshairCenterDotSize;
+
+    public double CrosshairCenterDotOpacity => _settings.CrosshairCenterDotOpacity;
+
+    public bool ShowOuterCrosshairLines => _settings.ShowOuterCrosshairLines;
+
+    public double OuterCrosshairSize => _settings.OuterCrosshairSize;
+
+    public double OuterCrosshairThickness => _settings.OuterCrosshairThickness;
+
+    public double OuterCrosshairGap => _settings.OuterCrosshairGap;
+
+    public double OuterCrosshairOpacity => _settings.OuterCrosshairOpacity;
+
+    public CrosshairStyle CrosshairStyle => _settings.CrosshairStyle;
+
+    public OuterRingStyle OuterRingStyle => _settings.OuterRingStyle;
+
     public double OffsetX => _settings.OffsetX;
 
     public double OffsetY => _settings.OffsetY;
@@ -53,6 +102,14 @@ public sealed class OverlayViewModel : INotifyPropertyChanged
     public double ProgressValue => _snapshot.Progress;
 
     public Visibility DirectionPadVisibility => _settings.ShowDirectionPad ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility MovementBarsVisibility => _settings.ShowMovementBars ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility OuterRingVisibility => _settings.ShowOuterRing ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility StatusBadgeVisibility => _settings.ShowStatusBadge ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility CenterCrosshairVisibility => _settings.ShowCenterCrosshair ? Visibility.Visible : Visibility.Collapsed;
 
     public string ForwardLabel => KeyText.Display(_settings.ForwardKey);
 
@@ -80,9 +137,39 @@ public sealed class OverlayViewModel : INotifyPropertyChanged
 
     public Brush RightBrush => _snapshot.RightActive ? AccentBrush : InactiveBrush;
 
+    public Brush CrosshairBrush => _settings.CrosshairColorPreset switch
+    {
+        CrosshairColorPreset.Green => GreenCrosshairBrush,
+        CrosshairColorPreset.White => WhiteCrosshairBrush,
+        CrosshairColorPreset.Yellow => YellowCrosshairBrush,
+        CrosshairColorPreset.Red => RedCrosshairBrush,
+        CrosshairColorPreset.Purple => PurpleCrosshairBrush,
+        CrosshairColorPreset.State => AccentBrush,
+        CrosshairColorPreset.Custom => FrozenBrush(Color.FromRgb(
+            (byte)_settings.CrosshairRed,
+            (byte)_settings.CrosshairGreen,
+            (byte)_settings.CrosshairBlue)),
+        _ => CyanCrosshairBrush
+    };
+
+    public Brush CrosshairOutlineBrush => CenterCrosshairOutlineBrush;
+
+    private bool ShouldFadeCrosshair => _settings.FadeCrosshairWhileMoving
+        && _snapshot.State is MovementIndicatorState.Moving
+            or MovementIndicatorState.Stopping
+            or MovementIndicatorState.CounterStrafing
+            or MovementIndicatorState.Conflict;
+
     private static Brush FrozenBrush(string color)
     {
         var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+        brush.Freeze();
+        return brush;
+    }
+
+    private static Brush FrozenBrush(Color color)
+    {
+        var brush = new SolidColorBrush(color);
         brush.Freeze();
         return brush;
     }
