@@ -1,0 +1,155 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*.*.*
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version without the leading v
+        required: true
+        type: string
+      prerelease:
+        description: Publish as a prerelease
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_VERSION: 9.0.x
+  PACKAGE_ID: EmergencyStop
+  CHANNEL: win
+  RUNTIME: win-x64
+  PROJECT_PATH: src/EmergencyStop/EmergencyStop.csproj
+  REPO_URL: https://github.com/${{ github.repository }}
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Resolve version
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $version = "${{ inputs.version }}".Trim()
+            $tag = "v$version"
+            $prerelease = "${{ inputs.prerelease }}".ToLowerInvariant()
+          } else {
+            $tag = "${{ github.ref_name }}"
+            $version = $tag.TrimStart("v")
+            $prerelease = $version.Contains("-").ToString().ToLowerInvariant()
+          }
+
+          if ($version -notmatch '^\d+\.\d+\.\d+([-.+][0-9A-Za-z.-]+)?$') {
+            throw "Version '$version' is not a semantic version."
+          }
+
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "TAG_NAME=$tag" >> $env:GITHUB_ENV
+          "PRERELEASE=$prerelease" >> $env:GITHUB_ENV
+
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Publish app
+        shell: pwsh
+        run: |
+          dotnet publish $env:PROJECT_PATH `
+            -c Release `
+            -r $env:RUNTIME `
+            --self-contained true `
+            -o artifacts/publish `
+            -p:Version=$env:VERSION `
+            -p:PublishSingleFile=false `
+            -p:DebugType=none `
+            -p:DebugSymbols=false
+
+      - name: Install Velopack CLI
+        shell: pwsh
+        run: |
+          dotnet tool install --global vpk --version 1.2.0
+          "$env:USERPROFILE\.dotnet\tools" >> $env:GITHUB_PATH
+
+      - name: Download previous release feed
+        continue-on-error: true
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          vpk --yes true --legacyConsole true download github `
+            --repoUrl $env:REPO_URL `
+            --token $env:GITHUB_TOKEN `
+            --channel $env:CHANNEL `
+            --pre $env:PRERELEASE `
+            --outputDir artifacts/velopack
+
+      - name: Pack release
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          @(
+            "# Emergency Stop $env:VERSION",
+            "",
+            "Built from commit $env:GITHUB_SHA.",
+            "",
+            "This release contains the Velopack installer and update packages for Windows x64."
+          ) | Set-Content artifacts/release-notes.md -Encoding UTF8
+
+          vpk --yes true --legacyConsole true pack `
+            --packId $env:PACKAGE_ID `
+            --packVersion $env:VERSION `
+            --packDir artifacts/publish `
+            --outputDir artifacts/velopack `
+            --mainExe EmergencyStop.exe `
+            --packTitle "Emergency Stop" `
+            --packAuthors "Ninthless" `
+            --runtime $env:RUNTIME `
+            --channel $env:CHANNEL `
+            --releaseNotes artifacts/release-notes.md `
+            --shortcuts StartMenuRoot
+
+      - name: Generate checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem artifacts/velopack -File |
+            Sort-Object Name |
+            Get-FileHash -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash.ToLowerInvariant())  $([System.IO.Path]::GetFileName($_.Path))" } |
+            Set-Content artifacts/velopack/SHA256SUMS.txt -Encoding ASCII
+
+      - name: Upload release
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          vpk --yes true --legacyConsole true upload github `
+            --repoUrl $env:REPO_URL `
+            --token $env:GITHUB_TOKEN `
+            --channel $env:CHANNEL `
+            --outputDir artifacts/velopack `
+            --tag $env:TAG_NAME `
+            --releaseName "Emergency Stop $env:VERSION" `
+            --publish true `
+            --pre $env:PRERELEASE `
+            --merge true
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: EmergencyStop-${{ env.VERSION }}-${{ env.RUNTIME }}
+          path: artifacts/velopack

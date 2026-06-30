@@ -13,3 +13,5 @@ obj/
 *.nupkg
 TestResults/
 publish/
+artifacts/
+Releases/

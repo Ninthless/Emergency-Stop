@@ -50,16 +50,20 @@ Riot / 腾讯 / Vanguard 的规则和检测策略可能变化，最终解释权�
   - `BOTH`：同轴双键冲突
 - 系统托盘菜单：
   - 打开设置
+  - 检查更新
   - 显示/隐藏覆盖层
   - 鼠标穿透
   - 退出
 - 设置自动保存到 `%AppData%\EmergencyStop\settings.json`
+- 通过 Velopack 安装后支持启动时自动检查更新，也可以从托盘手动检查
 
 ## 运行
 
 当前项目发布目标为 Windows x64。
 
-已发布的本地可执行文件位于：
+推荐使用 GitHub Releases 中的 Velopack `EmergencyStop-win-Setup.exe` 安装。通过安装器安装后，自动更新才会生效。
+
+开发构建的本地可执行文件位于：
 
 ```text
 src\EmergencyStop\bin\Release\net9.0-windows\win-x64\publish\EmergencyStop.exe
@@ -89,6 +93,7 @@ src\EmergencyStop\bin\Release\net9.0-windows\win-x64\publish\EmergencyStop.exe
 NuGet 依赖：
 
 - `WPF-UI`：设置页窗口外壳、主题资源和现代 WPF 基础设施
+- `Velopack`：Windows 安装器、GitHub Releases 更新源和自动更新
 
 构建：
 
@@ -96,17 +101,27 @@ NuGet 依赖：
 dotnet build EmergencyStop.sln
 ```
 
-发布 Windows x64 自包含版本：
+发布 Windows x64 自包含构建：
 
 ```powershell
-dotnet publish src\EmergencyStop\EmergencyStop.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
+dotnet publish src\EmergencyStop\EmergencyStop.csproj -c Release -r win-x64 --self-contained true -o artifacts\publish -p:PublishSingleFile=false
 ```
+
+打包 Velopack 安装器：
+
+```powershell
+vpk --yes true --legacyConsole true pack --packId EmergencyStop --packVersion 0.1.0 --packDir artifacts\publish --outputDir artifacts\velopack --mainExe EmergencyStop.exe --packTitle "Emergency Stop" --packAuthors "Ninthless" --runtime win-x64 --channel win --shortcuts StartMenuRoot
+```
+
+完整发布流程见 [docs/release.md](docs/release.md)。
 
 ## 项目结构
 
 ```text
 EmergencyStop.sln
 README.md
+.github/workflows/release.yml             GitHub Releases 自动发布流程
+docs/release.md                           Velopack 发布和自动更新说明
 src/
   EmergencyStop/
     EmergencyStop.csproj
@@ -121,6 +136,7 @@ src/
     SettingsWindow.xaml                 设置窗口
     SettingsStore.cs                    本地配置读写
     TrayService.cs                      系统托盘菜单
+    UpdateService.cs                    Velopack 更新检查、下载和重启安装
 ```
 
 ## 急停估算说明
