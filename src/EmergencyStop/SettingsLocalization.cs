@@ -75,11 +75,29 @@ public static class SettingsLocalization
         ["Close"] = "关闭"
     };
 
+    private static readonly IReadOnlyDictionary<string, string> AdditionalChineseText = new Dictionary<string, string>
+    {
+        ["Automatic updates"] = "自动更新",
+        ["Check for updates"] = "检查更新",
+        ["Emergency Stop Update"] = "Emergency Stop 更新",
+        ["An update is already being checked."] = "正在检查更新。",
+        ["Updates are available only after installing Emergency Stop with the Setup installer."] = "通过 Setup 安装 Emergency Stop 后才可使用更新。",
+        ["Emergency Stop is up to date."] = "Emergency Stop 已是最新版本。",
+        ["A new version is available. Download it now?"] = "发现新版本。现在下载吗？",
+        ["Update downloaded. Restart Emergency Stop now to finish installing?"] = "更新已下载。现在重启 Emergency Stop 完成安装吗？",
+        ["Unable to check for updates."] = "无法检查更新。",
+        ["Unable to download the update."] = "无法下载更新。"
+    };
+
     private static readonly IReadOnlyDictionary<string, string> EnglishText =
-        ChineseText.Keys.ToDictionary(key => key, key => key);
+        ChineseText.Keys
+            .Concat(AdditionalChineseText.Keys)
+            .ToDictionary(key => key, key => key);
 
     private static readonly IReadOnlyDictionary<string, string> ChineseToEnglish =
-        ChineseText.ToDictionary(pair => pair.Value, pair => pair.Key);
+        ChineseText
+            .Concat(AdditionalChineseText)
+            .ToDictionary(pair => pair.Value, pair => pair.Key);
 
     public static SettingsLanguage Resolve(SettingsLanguage language)
     {
@@ -97,7 +115,9 @@ public static class SettingsLocalization
     {
         var resolved = Resolve(language);
         var source = ChineseToEnglish.TryGetValue(english, out var reverse) ? reverse : english;
-        return resolved == SettingsLanguage.Chinese && ChineseText.TryGetValue(source, out var chinese)
+        return resolved == SettingsLanguage.Chinese
+            && (ChineseText.TryGetValue(source, out var chinese)
+                || AdditionalChineseText.TryGetValue(source, out chinese))
             ? chinese
             : EnglishText.TryGetValue(source, out var text) ? text : source;
     }

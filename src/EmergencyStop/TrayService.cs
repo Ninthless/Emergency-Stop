@@ -11,7 +11,12 @@ public sealed class TrayService : IDisposable
     private readonly Forms.ToolStripMenuItem _overlayItem;
     private readonly Forms.ToolStripMenuItem _clickThroughItem;
 
-    public TrayService(AppSettings settings, Action openSettings, Action exitApplication, Action saveNow)
+    public TrayService(
+        AppSettings settings,
+        Action openSettings,
+        Action exitApplication,
+        Action saveNow,
+        Func<Task> checkForUpdates)
     {
         _settings = settings;
         _saveNow = saveNow;
@@ -40,6 +45,7 @@ public sealed class TrayService : IDisposable
 
         var menu = new Forms.ContextMenuStrip();
         menu.Items.Add("打开设置", null, (_, _) => openSettings());
+        menu.Items.Add(SettingsLocalization.Text("Check for updates", _settings.SettingsLanguage), null, async (_, _) => await checkForUpdates());
         menu.Items.Add(_overlayItem);
         menu.Items.Add(_clickThroughItem);
         menu.Items.Add(new Forms.ToolStripSeparator());

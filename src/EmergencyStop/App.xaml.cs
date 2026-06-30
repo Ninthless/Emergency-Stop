@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Threading;
+using Velopack;
 
 namespace EmergencyStop;
 
@@ -11,10 +12,24 @@ public partial class App : System.Windows.Application
     private RawInputKeyboardListener? _keyboardListener;
     private KeyboardStatePoller? _keyboardStatePoller;
     private TrayService? _trayService;
+    private UpdateService? _updateService;
     private OverlayWindow? _overlayWindow;
     private SettingsWindow? _settingsWindow;
     private DispatcherTimer? _movementTimer;
     private DispatcherTimer? _saveTimer;
+
+    [STAThread]
+    public static void Main(string[] args)
+    {
+        VelopackApp.Build()
+            .SetArgs(args)
+            .SetAutoApplyOnStartup(false)
+            .Run();
+
+        var app = new App();
+        app.InitializeComponent();
+        app.Run();
+    }
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -75,7 +90,9 @@ public partial class App : System.Windows.Application
             QueueSave();
         };
 
-        _trayService = new TrayService(_settings, OpenSettings, ExitApplication, SaveNow);
+        _updateService = new UpdateService(_settings, SaveNow);
+        _trayService = new TrayService(_settings, OpenSettings, ExitApplication, SaveNow, CheckForUpdates);
+        Dispatcher.BeginInvoke(CheckForUpdatesOnStartup);
 
         if (_settings.OpenSettingsOnStartup)
         {
@@ -91,6 +108,22 @@ public partial class App : System.Windows.Application
         _keyboardListener?.Dispose();
         _trayService?.Dispose();
         base.OnExit(e);
+    }
+
+    private async void CheckForUpdatesOnStartup()
+    {
+        if (_updateService is not null && _settings?.AutoUpdateEnabled == true)
+        {
+            await _updateService.CheckForUpdatesAsync(false);
+        }
+    }
+
+    private async Task CheckForUpdates()
+    {
+        if (_updateService is not null)
+        {
+            await _updateService.CheckForUpdatesAsync(true);
+        }
     }
 
     private void HandleKeyChanged(object? sender, KeyboardInputEventArgs e)
