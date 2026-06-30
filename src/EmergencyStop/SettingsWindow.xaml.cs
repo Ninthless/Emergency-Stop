@@ -32,6 +32,10 @@ public partial class SettingsWindow : FluentWindow
         CrosshairStyleComboBox.ItemsSource = Enum.GetValues<CrosshairStyle>();
         CrosshairColorComboBox.ItemsSource = Enum.GetValues<CrosshairColorPreset>();
         OuterRingStyleComboBox.ItemsSource = Enum.GetValues<OuterRingStyle>();
+        MovementBarShapeComboBox.ItemsSource = Enum.GetValues<MovementBarShape>();
+        StatusBadgeContentComboBox.ItemsSource = Enum.GetValues<StatusBadgeContent>();
+        StatusBadgePositionComboBox.ItemsSource = Enum.GetValues<StatusBadgePosition>();
+        DirectionLabelContentComboBox.ItemsSource = Enum.GetValues<DirectionLabelContent>();
         LanguageComboBox.DisplayMemberPath = nameof(SettingsLanguageOption.DisplayName);
         LanguageComboBox.SelectedValuePath = nameof(SettingsLanguageOption.Language);
         UpdateLanguageCombo();
@@ -171,7 +175,9 @@ public partial class SettingsWindow : FluentWindow
         OuterLineControls.IsEnabled = crosshairVisible && _settings.ShowOuterCrosshairLines;
         MovementFadeSection.IsEnabled = crosshairVisible;
         MovingOpacityControls.IsEnabled = crosshairVisible && _settings.FadeCrosshairWhileMoving;
-        MovementBarsOpacityControls.IsEnabled = _settings.ShowMovementBars;
+        MovementBarsControls.IsEnabled = _settings.ShowMovementBars;
+        StatusBadgeControls.IsEnabled = _settings.ShowStatusBadge;
+        DirectionLabelControls.IsEnabled = _settings.ShowDirectionPad;
         OuterRingControls.IsEnabled = _settings.ShowOuterRing;
     }
 

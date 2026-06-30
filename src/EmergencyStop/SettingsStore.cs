@@ -6,7 +6,7 @@ namespace EmergencyStop;
 
 public sealed class SettingsStore
 {
-    private const int CurrentSettingsVersion = 9;
+    private const int CurrentSettingsVersion = 10;
 
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -89,6 +89,18 @@ public sealed class SettingsStore
         settings.OuterRingThickness = dto.OuterRingThickness ?? settings.OuterRingThickness;
         settings.OuterRingOpacity = dto.OuterRingOpacity ?? settings.OuterRingOpacity;
         settings.MovementBarsOpacity = dto.MovementBarsOpacity ?? settings.MovementBarsOpacity;
+        settings.MovementBarLength = dto.MovementBarLength ?? settings.MovementBarLength;
+        settings.MovementBarThickness = dto.MovementBarThickness ?? settings.MovementBarThickness;
+        settings.MovementBarDistance = dto.MovementBarDistance ?? settings.MovementBarDistance;
+        settings.MovementBarInactiveOpacity = dto.MovementBarInactiveOpacity ?? settings.MovementBarInactiveOpacity;
+        settings.StatusBadgeOpacity = dto.StatusBadgeOpacity ?? settings.StatusBadgeOpacity;
+        settings.StatusBadgeWidth = dto.StatusBadgeWidth ?? settings.StatusBadgeWidth;
+        settings.StatusBadgeFontSize = dto.StatusBadgeFontSize ?? settings.StatusBadgeFontSize;
+        settings.StatusBadgeOffset = dto.StatusBadgeOffset ?? settings.StatusBadgeOffset;
+        settings.DirectionLabelOpacity = dto.DirectionLabelOpacity ?? settings.DirectionLabelOpacity;
+        settings.DirectionLabelWidth = dto.DirectionLabelWidth ?? settings.DirectionLabelWidth;
+        settings.DirectionLabelFontSize = dto.DirectionLabelFontSize ?? settings.DirectionLabelFontSize;
+        settings.DirectionLabelDistance = dto.DirectionLabelDistance ?? settings.DirectionLabelDistance;
         settings.CenterCrosshairOpacity = version >= 5
             ? dto.CenterCrosshairOpacity ?? settings.CenterCrosshairOpacity
             : settings.CenterCrosshairOpacity;
@@ -110,6 +122,10 @@ public sealed class SettingsStore
         settings.CrosshairStyle = ParseEnum(dto.CrosshairStyle, settings.CrosshairStyle);
         settings.CrosshairColorPreset = ParseEnum(dto.CrosshairColorPreset, settings.CrosshairColorPreset);
         settings.OuterRingStyle = ParseEnum(dto.OuterRingStyle, settings.OuterRingStyle);
+        settings.MovementBarShape = ParseEnum(dto.MovementBarShape, settings.MovementBarShape);
+        settings.StatusBadgeContent = ParseEnum(dto.StatusBadgeContent, settings.StatusBadgeContent);
+        settings.StatusBadgePosition = ParseEnum(dto.StatusBadgePosition, settings.StatusBadgePosition);
+        settings.DirectionLabelContent = ParseEnum(dto.DirectionLabelContent, settings.DirectionLabelContent);
         settings.ReleaseStopMilliseconds = dto.ReleaseStopMilliseconds ?? settings.ReleaseStopMilliseconds;
         settings.CounterStopMilliseconds = ResolveVersionedDefault(
             dto.CounterStopMilliseconds,
@@ -154,6 +170,18 @@ public sealed class SettingsStore
             OuterRingThickness = settings.OuterRingThickness,
             OuterRingOpacity = settings.OuterRingOpacity,
             MovementBarsOpacity = settings.MovementBarsOpacity,
+            MovementBarLength = settings.MovementBarLength,
+            MovementBarThickness = settings.MovementBarThickness,
+            MovementBarDistance = settings.MovementBarDistance,
+            MovementBarInactiveOpacity = settings.MovementBarInactiveOpacity,
+            StatusBadgeOpacity = settings.StatusBadgeOpacity,
+            StatusBadgeWidth = settings.StatusBadgeWidth,
+            StatusBadgeFontSize = settings.StatusBadgeFontSize,
+            StatusBadgeOffset = settings.StatusBadgeOffset,
+            DirectionLabelOpacity = settings.DirectionLabelOpacity,
+            DirectionLabelWidth = settings.DirectionLabelWidth,
+            DirectionLabelFontSize = settings.DirectionLabelFontSize,
+            DirectionLabelDistance = settings.DirectionLabelDistance,
             CenterCrosshairOpacity = settings.CenterCrosshairOpacity,
             MovingCrosshairOpacity = settings.MovingCrosshairOpacity,
             CrosshairSize = settings.CrosshairSize,
@@ -173,6 +201,10 @@ public sealed class SettingsStore
             CrosshairStyle = settings.CrosshairStyle.ToString(),
             CrosshairColorPreset = settings.CrosshairColorPreset.ToString(),
             OuterRingStyle = settings.OuterRingStyle.ToString(),
+            MovementBarShape = settings.MovementBarShape.ToString(),
+            StatusBadgeContent = settings.StatusBadgeContent.ToString(),
+            StatusBadgePosition = settings.StatusBadgePosition.ToString(),
+            DirectionLabelContent = settings.DirectionLabelContent.ToString(),
             ReleaseStopMilliseconds = settings.ReleaseStopMilliseconds,
             CounterStopMilliseconds = settings.CounterStopMilliseconds,
             ReadyFlashMilliseconds = settings.ReadyFlashMilliseconds,
@@ -228,6 +260,18 @@ public sealed class SettingsStore
         public double? OuterRingThickness { get; set; }
         public double? OuterRingOpacity { get; set; }
         public double? MovementBarsOpacity { get; set; }
+        public double? MovementBarLength { get; set; }
+        public double? MovementBarThickness { get; set; }
+        public double? MovementBarDistance { get; set; }
+        public double? MovementBarInactiveOpacity { get; set; }
+        public double? StatusBadgeOpacity { get; set; }
+        public double? StatusBadgeWidth { get; set; }
+        public double? StatusBadgeFontSize { get; set; }
+        public double? StatusBadgeOffset { get; set; }
+        public double? DirectionLabelOpacity { get; set; }
+        public double? DirectionLabelWidth { get; set; }
+        public double? DirectionLabelFontSize { get; set; }
+        public double? DirectionLabelDistance { get; set; }
         public double? CenterCrosshairOpacity { get; set; }
         public double? MovingCrosshairOpacity { get; set; }
         public double? CrosshairSize { get; set; }
@@ -247,6 +291,10 @@ public sealed class SettingsStore
         public string? CrosshairStyle { get; set; }
         public string? CrosshairColorPreset { get; set; }
         public string? OuterRingStyle { get; set; }
+        public string? MovementBarShape { get; set; }
+        public string? StatusBadgeContent { get; set; }
+        public string? StatusBadgePosition { get; set; }
+        public string? DirectionLabelContent { get; set; }
         public int? ReleaseStopMilliseconds { get; set; }
         public int? CounterStopMilliseconds { get; set; }
         public int? ReadyFlashMilliseconds { get; set; }

@@ -36,34 +36,34 @@
                                         VerticalAlignment="Center" />
                 <Grid Opacity="{Binding MovementBarsOpacity}"
                       Visibility="{Binding MovementBarsVisibility}">
-                    <Border Width="26"
-                            Height="5"
+                    <Border Width="{Binding MovementBarLength}"
+                            Height="{Binding MovementBarThickness}"
                             Background="{Binding ForwardBrush}"
-                            CornerRadius="3"
+                            CornerRadius="{Binding MovementBarCornerRadius}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
-                            Margin="0,22,0,0" />
-                    <Border Width="26"
-                            Height="5"
+                            Margin="{Binding ForwardBarMargin}" />
+                    <Border Width="{Binding MovementBarLength}"
+                            Height="{Binding MovementBarThickness}"
                             Background="{Binding BackwardBrush}"
-                            CornerRadius="3"
+                            CornerRadius="{Binding MovementBarCornerRadius}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
-                            Margin="0,0,0,22" />
-                    <Border Width="5"
-                            Height="26"
+                            Margin="{Binding BackwardBarMargin}" />
+                    <Border Width="{Binding MovementBarThickness}"
+                            Height="{Binding MovementBarLength}"
                             Background="{Binding LeftBrush}"
-                            CornerRadius="3"
+                            CornerRadius="{Binding MovementBarCornerRadius}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Margin="22,0,0,0" />
-                    <Border Width="5"
-                            Height="26"
+                            Margin="{Binding LeftBarMargin}" />
+                    <Border Width="{Binding MovementBarThickness}"
+                            Height="{Binding MovementBarLength}"
                             Background="{Binding RightBrush}"
-                            CornerRadius="3"
+                            CornerRadius="{Binding MovementBarCornerRadius}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            Margin="0,0,22,0" />
+                            Margin="{Binding RightBarMargin}" />
                 </Grid>
                 <local:CrosshairElement Width="64"
                                         Height="64"
@@ -87,98 +87,118 @@
                                         Visibility="{Binding CenterCrosshairVisibility}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center" />
-                <Border Width="78"
-                        Height="22"
+                <Border Width="{Binding StatusBadgeWidth}"
+                        Height="{Binding StatusBadgeHeight}"
                         Background="#101820"
                         BorderBrush="{Binding AccentBrush}"
                         BorderThickness="1"
                         CornerRadius="5"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Margin="0,0,0,2"
-                        Opacity="0.92"
+                        VerticalAlignment="{Binding StatusBadgeVerticalAlignment}"
+                        Margin="{Binding StatusBadgeMargin}"
+                        Opacity="{Binding StatusBadgeOpacity}"
                         Visibility="{Binding StatusBadgeVisibility}">
-                    <TextBlock Text="{Binding StatusText}"
-                               Foreground="{Binding AccentBrush}"
-                               FontSize="11"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
+                    <Viewbox Stretch="Uniform"
+                             StretchDirection="DownOnly"
+                             Margin="4,0">
+                        <TextBlock Text="{Binding StatusBadgeText}"
+                                   Foreground="{Binding AccentBrush}"
+                                   FontSize="{Binding StatusBadgeFontSize}"
+                                   FontWeight="Bold"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Viewbox>
                 </Border>
-                <Grid Width="174"
-                      Height="174"
+                <Grid Width="180"
+                      Height="180"
+                      Opacity="{Binding DirectionLabelOpacity}"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       Visibility="{Binding DirectionPadVisibility}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Row="0"
-                            Grid.Column="1"
-                            Width="34"
-                            Height="21"
+                    <Border Width="{Binding DirectionLabelWidth}"
+                            Height="{Binding DirectionLabelHeight}"
                             Background="#101820"
                             BorderBrush="{Binding ForwardBrush}"
                             BorderThickness="1"
-                            CornerRadius="5">
-                        <TextBlock Text="{Binding ForwardLabel}"
-                                   Foreground="#EAF1F8"
-                                   FontSize="10"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
+                            CornerRadius="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Margin="{Binding ForwardLabelMargin}">
+                        <Viewbox Stretch="Uniform"
+                                 StretchDirection="DownOnly"
+                                 Margin="3,0">
+                            <TextBlock Text="{Binding ForwardLabel}"
+                                       Foreground="#EAF1F8"
+                                       FontSize="{Binding DirectionLabelFontSize}"
+                                       FontWeight="Bold"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Viewbox>
                     </Border>
-                    <Border Grid.Row="2"
-                            Grid.Column="1"
-                            Width="34"
-                            Height="21"
+                    <Border Width="{Binding DirectionLabelWidth}"
+                            Height="{Binding DirectionLabelHeight}"
                             Background="#101820"
                             BorderBrush="{Binding BackwardBrush}"
                             BorderThickness="1"
-                            CornerRadius="5">
-                        <TextBlock Text="{Binding BackwardLabel}"
-                                   Foreground="#EAF1F8"
-                                   FontSize="10"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
+                            CornerRadius="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Margin="{Binding BackwardLabelMargin}">
+                        <Viewbox Stretch="Uniform"
+                                 StretchDirection="DownOnly"
+                                 Margin="3,0">
+                            <TextBlock Text="{Binding BackwardLabel}"
+                                       Foreground="#EAF1F8"
+                                       FontSize="{Binding DirectionLabelFontSize}"
+                                       FontWeight="Bold"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Viewbox>
                     </Border>
-                    <Border Grid.Row="1"
-                            Grid.Column="0"
-                            Width="34"
-                            Height="21"
+                    <Border Width="{Binding DirectionLabelWidth}"
+                            Height="{Binding DirectionLabelHeight}"
                             Background="#101820"
                             BorderBrush="{Binding LeftBrush}"
                             BorderThickness="1"
-                            CornerRadius="5">
-                        <TextBlock Text="{Binding LeftLabel}"
-                                   Foreground="#EAF1F8"
-                                   FontSize="10"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
+                            CornerRadius="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="{Binding LeftLabelMargin}">
+                        <Viewbox Stretch="Uniform"
+                                 StretchDirection="DownOnly"
+                                 Margin="3,0">
+                            <TextBlock Text="{Binding LeftLabel}"
+                                       Foreground="#EAF1F8"
+                                       FontSize="{Binding DirectionLabelFontSize}"
+                                       FontWeight="Bold"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Viewbox>
                     </Border>
-                    <Border Grid.Row="1"
-                            Grid.Column="2"
-                            Width="34"
-                            Height="21"
+                    <Border Width="{Binding DirectionLabelWidth}"
+                            Height="{Binding DirectionLabelHeight}"
                             Background="#101820"
                             BorderBrush="{Binding RightBrush}"
                             BorderThickness="1"
-                            CornerRadius="5">
-                        <TextBlock Text="{Binding RightLabel}"
-                                   Foreground="#EAF1F8"
-                                   FontSize="10"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" />
+                            CornerRadius="5"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="{Binding RightLabelMargin}">
+                        <Viewbox Stretch="Uniform"
+                                 StretchDirection="DownOnly"
+                                 Margin="3,0">
+                            <TextBlock Text="{Binding RightLabel}"
+                                       Foreground="#EAF1F8"
+                                       FontSize="{Binding DirectionLabelFontSize}"
+                                       FontWeight="Bold"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Viewbox>
                     </Border>
                 </Grid>
             </Grid>

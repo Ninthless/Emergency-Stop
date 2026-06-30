@@ -86,7 +86,23 @@ public static class SettingsLocalization
         ["A new version is available. Download it now?"] = "发现新版本。现在下载吗？",
         ["Update downloaded. Restart Emergency Stop now to finish installing?"] = "更新已下载。现在重启 Emergency Stop 完成安装吗？",
         ["Unable to check for updates."] = "无法检查更新。",
-        ["Unable to download the update."] = "无法下载更新。"
+        ["Unable to download the update."] = "无法下载更新。",
+        ["Movement bar shape"] = "移动条形状",
+        ["Bar length"] = "条长度",
+        ["Bar thickness"] = "条粗细",
+        ["Bar distance"] = "条距离",
+        ["Inactive opacity"] = "未激活透明度",
+        ["State badge content"] = "状态标识内容",
+        ["Badge position"] = "标识位置",
+        ["Badge opacity"] = "标识透明度",
+        ["Badge width"] = "标识宽度",
+        ["Badge font size"] = "标识字号",
+        ["Badge offset"] = "标识偏移",
+        ["Direction label style"] = "方向标签样式",
+        ["Label opacity"] = "标签透明度",
+        ["Label width"] = "标签宽度",
+        ["Label font size"] = "标签字号",
+        ["Label distance"] = "标签距离"
     };
 
     private static readonly IReadOnlyDictionary<string, string> EnglishText =

@@ -945,7 +945,12 @@
                                               IsChecked="{Binding ShowStatusBadge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox Content="Direction key labels"
                                               IsChecked="{Binding ShowDirectionPad, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <StackPanel x:Name="MovementBarsOpacityControls">
+                                    <StackPanel x:Name="MovementBarsControls"
+                                                Margin="0,8,0,0">
+                                        <TextBlock Text="Movement bar shape" />
+                                        <ComboBox x:Name="MovementBarShapeComboBox"
+                                                  SelectedItem="{Binding MovementBarShape, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
@@ -960,6 +965,204 @@
                                                 Minimum="0.05"
                                                 Maximum="1"
                                                 Value="{Binding MovementBarsOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Bar length" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=MovementBarLengthSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="MovementBarLengthSlider"
+                                                Minimum="10"
+                                                Maximum="54"
+                                                Value="{Binding MovementBarLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Bar thickness" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=MovementBarThicknessSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="MovementBarThicknessSlider"
+                                                Minimum="2"
+                                                Maximum="12"
+                                                Value="{Binding MovementBarThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Bar distance" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=MovementBarDistanceSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="MovementBarDistanceSlider"
+                                                Minimum="36"
+                                                Maximum="84"
+                                                Value="{Binding MovementBarDistance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Inactive opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=MovementBarInactiveOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="MovementBarInactiveOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="0.9"
+                                                Value="{Binding MovementBarInactiveOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="StatusBadgeControls"
+                                                Margin="0,12,0,0">
+                                        <TextBlock Text="State badge content" />
+                                        <ComboBox x:Name="StatusBadgeContentComboBox"
+                                                  SelectedItem="{Binding StatusBadgeContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Badge position" />
+                                        <ComboBox x:Name="StatusBadgePositionComboBox"
+                                                  SelectedItem="{Binding StatusBadgePosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Badge opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=StatusBadgeOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="StatusBadgeOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="1"
+                                                Value="{Binding StatusBadgeOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Badge width" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=StatusBadgeWidthSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="StatusBadgeWidthSlider"
+                                                Minimum="54"
+                                                Maximum="132"
+                                                Value="{Binding StatusBadgeWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Badge font size" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=StatusBadgeFontSizeSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="StatusBadgeFontSizeSlider"
+                                                Minimum="8"
+                                                Maximum="18"
+                                                Value="{Binding StatusBadgeFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Badge offset" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=StatusBadgeOffsetSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="StatusBadgeOffsetSlider"
+                                                Minimum="0"
+                                                Maximum="32"
+                                                Value="{Binding StatusBadgeOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="DirectionLabelControls"
+                                                Margin="0,12,0,0">
+                                        <TextBlock Text="Direction label style" />
+                                        <ComboBox x:Name="DirectionLabelContentComboBox"
+                                                  SelectedItem="{Binding DirectionLabelContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Label opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=DirectionLabelOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="DirectionLabelOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="1"
+                                                Value="{Binding DirectionLabelOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Label width" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=DirectionLabelWidthSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="DirectionLabelWidthSlider"
+                                                Minimum="22"
+                                                Maximum="54"
+                                                Value="{Binding DirectionLabelWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Label font size" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=DirectionLabelFontSizeSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="DirectionLabelFontSizeSlider"
+                                                Minimum="8"
+                                                Maximum="16"
+                                                Value="{Binding DirectionLabelFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Label distance" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=DirectionLabelDistanceSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="DirectionLabelDistanceSlider"
+                                                Minimum="34"
+                                                Maximum="84"
+                                                Value="{Binding DirectionLabelDistance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                 </StackPanel>
                             </Border>

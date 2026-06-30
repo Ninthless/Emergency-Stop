@@ -29,6 +29,18 @@ public sealed class AppSettings : INotifyPropertyChanged
     private double _outerRingThickness = 3;
     private double _outerRingOpacity = 0.9;
     private double _movementBarsOpacity = 0.95;
+    private double _movementBarLength = 26;
+    private double _movementBarThickness = 5;
+    private double _movementBarDistance = 65;
+    private double _movementBarInactiveOpacity = 0.45;
+    private double _statusBadgeOpacity = 0.92;
+    private double _statusBadgeWidth = 78;
+    private double _statusBadgeFontSize = 11;
+    private double _statusBadgeOffset = 2;
+    private double _directionLabelOpacity = 0.95;
+    private double _directionLabelWidth = 34;
+    private double _directionLabelFontSize = 10;
+    private double _directionLabelDistance = 61;
     private double _centerCrosshairOpacity = 1;
     private double _movingCrosshairOpacity = 0.45;
     private double _crosshairSize = 4;
@@ -48,6 +60,10 @@ public sealed class AppSettings : INotifyPropertyChanged
     private CrosshairStyle _crosshairStyle = CrosshairStyle.Classic;
     private CrosshairColorPreset _crosshairColorPreset = CrosshairColorPreset.Cyan;
     private OuterRingStyle _outerRingStyle = OuterRingStyle.Brackets;
+    private MovementBarShape _movementBarShape = MovementBarShape.Rounded;
+    private StatusBadgeContent _statusBadgeContent = StatusBadgeContent.Status;
+    private StatusBadgePosition _statusBadgePosition = StatusBadgePosition.Bottom;
+    private DirectionLabelContent _directionLabelContent = DirectionLabelContent.Keys;
     private int _releaseStopMilliseconds = 105;
     private int _counterStopMilliseconds = 90;
     private int _readyFlashMilliseconds = 55;
@@ -194,6 +210,78 @@ public sealed class AppSettings : INotifyPropertyChanged
         set => SetField(ref _movementBarsOpacity, Math.Clamp(value, 0.05, 1));
     }
 
+    public double MovementBarLength
+    {
+        get => _movementBarLength;
+        set => SetField(ref _movementBarLength, Math.Clamp(value, 10, 54));
+    }
+
+    public double MovementBarThickness
+    {
+        get => _movementBarThickness;
+        set => SetField(ref _movementBarThickness, Math.Clamp(value, 2, 12));
+    }
+
+    public double MovementBarDistance
+    {
+        get => _movementBarDistance;
+        set => SetField(ref _movementBarDistance, Math.Clamp(value, 36, 84));
+    }
+
+    public double MovementBarInactiveOpacity
+    {
+        get => _movementBarInactiveOpacity;
+        set => SetField(ref _movementBarInactiveOpacity, Math.Clamp(value, 0.05, 0.9));
+    }
+
+    public double StatusBadgeOpacity
+    {
+        get => _statusBadgeOpacity;
+        set => SetField(ref _statusBadgeOpacity, Math.Clamp(value, 0.05, 1));
+    }
+
+    public double StatusBadgeWidth
+    {
+        get => _statusBadgeWidth;
+        set => SetField(ref _statusBadgeWidth, Math.Clamp(value, 54, 132));
+    }
+
+    public double StatusBadgeFontSize
+    {
+        get => _statusBadgeFontSize;
+        set => SetField(ref _statusBadgeFontSize, Math.Clamp(value, 8, 18));
+    }
+
+    public double StatusBadgeOffset
+    {
+        get => _statusBadgeOffset;
+        set => SetField(ref _statusBadgeOffset, Math.Clamp(value, 0, 32));
+    }
+
+    public double DirectionLabelOpacity
+    {
+        get => _directionLabelOpacity;
+        set => SetField(ref _directionLabelOpacity, Math.Clamp(value, 0.05, 1));
+    }
+
+    public double DirectionLabelWidth
+    {
+        get => _directionLabelWidth;
+        set => SetField(ref _directionLabelWidth, Math.Clamp(value, 22, 54));
+    }
+
+    public double DirectionLabelFontSize
+    {
+        get => _directionLabelFontSize;
+        set => SetField(ref _directionLabelFontSize, Math.Clamp(value, 8, 16));
+    }
+
+    public double DirectionLabelDistance
+    {
+        get => _directionLabelDistance;
+        set => SetField(ref _directionLabelDistance, Math.Clamp(value, 34, 84));
+    }
+
     public double CenterCrosshairOpacity
     {
         get => _centerCrosshairOpacity;
@@ -308,6 +396,30 @@ public sealed class AppSettings : INotifyPropertyChanged
         set => SetField(ref _outerRingStyle, value);
     }
 
+    public MovementBarShape MovementBarShape
+    {
+        get => _movementBarShape;
+        set => SetField(ref _movementBarShape, value);
+    }
+
+    public StatusBadgeContent StatusBadgeContent
+    {
+        get => _statusBadgeContent;
+        set => SetField(ref _statusBadgeContent, value);
+    }
+
+    public StatusBadgePosition StatusBadgePosition
+    {
+        get => _statusBadgePosition;
+        set => SetField(ref _statusBadgePosition, value);
+    }
+
+    public DirectionLabelContent DirectionLabelContent
+    {
+        get => _directionLabelContent;
+        set => SetField(ref _directionLabelContent, value);
+    }
+
     public int ReleaseStopMilliseconds
     {
         get => _releaseStopMilliseconds;
@@ -368,6 +480,18 @@ public sealed class AppSettings : INotifyPropertyChanged
         OuterRingThickness = settings.OuterRingThickness;
         OuterRingOpacity = settings.OuterRingOpacity;
         MovementBarsOpacity = settings.MovementBarsOpacity;
+        MovementBarLength = settings.MovementBarLength;
+        MovementBarThickness = settings.MovementBarThickness;
+        MovementBarDistance = settings.MovementBarDistance;
+        MovementBarInactiveOpacity = settings.MovementBarInactiveOpacity;
+        StatusBadgeOpacity = settings.StatusBadgeOpacity;
+        StatusBadgeWidth = settings.StatusBadgeWidth;
+        StatusBadgeFontSize = settings.StatusBadgeFontSize;
+        StatusBadgeOffset = settings.StatusBadgeOffset;
+        DirectionLabelOpacity = settings.DirectionLabelOpacity;
+        DirectionLabelWidth = settings.DirectionLabelWidth;
+        DirectionLabelFontSize = settings.DirectionLabelFontSize;
+        DirectionLabelDistance = settings.DirectionLabelDistance;
         CenterCrosshairOpacity = settings.CenterCrosshairOpacity;
         MovingCrosshairOpacity = settings.MovingCrosshairOpacity;
         CrosshairSize = settings.CrosshairSize;
@@ -387,6 +511,10 @@ public sealed class AppSettings : INotifyPropertyChanged
         CrosshairStyle = settings.CrosshairStyle;
         CrosshairColorPreset = settings.CrosshairColorPreset;
         OuterRingStyle = settings.OuterRingStyle;
+        MovementBarShape = settings.MovementBarShape;
+        StatusBadgeContent = settings.StatusBadgeContent;
+        StatusBadgePosition = settings.StatusBadgePosition;
+        DirectionLabelContent = settings.DirectionLabelContent;
         ReleaseStopMilliseconds = settings.ReleaseStopMilliseconds;
         CounterStopMilliseconds = settings.CounterStopMilliseconds;
         ReadyFlashMilliseconds = settings.ReadyFlashMilliseconds;
