@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,6 +26,7 @@ public partial class SettingsWindow : FluentWindow
         _settingsStore = settingsStore;
         DataContext = settings;
         InitializeComponent();
+        _settings.PropertyChanged += Settings_PropertyChanged;
         ApplySystemTheme();
         SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
         CrosshairStyleComboBox.ItemsSource = Enum.GetValues<CrosshairStyle>();
@@ -36,10 +38,12 @@ public partial class SettingsWindow : FluentWindow
         ApplyLanguage();
         ShowSection("Crosshair");
         UpdateKeyButtons();
+        UpdateControlAvailability();
     }
 
     protected override void OnClosed(EventArgs e)
     {
+        _settings.PropertyChanged -= Settings_PropertyChanged;
         SystemEvents.UserPreferenceChanged -= SystemEvents_UserPreferenceChanged;
         _settingsStore.Save(_settings);
         base.OnClosed(e);
@@ -103,6 +107,7 @@ public partial class SettingsWindow : FluentWindow
         ApplyLanguage();
         CaptureHint.Text = SettingsLocalization.DefaultsRestored(_settings.SettingsLanguage);
         UpdateKeyButtons();
+        UpdateControlAvailability();
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -142,6 +147,32 @@ public partial class SettingsWindow : FluentWindow
 
         var presetName = button.Content?.ToString() ?? SettingsLocalization.Text("Pro Cyan", _settings.SettingsLanguage);
         CaptureHint.Text = SettingsLocalization.PresetApplied(presetName, _settings.SettingsLanguage);
+        UpdateControlAvailability();
+    }
+
+    private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        UpdateControlAvailability();
+    }
+
+    private void UpdateControlAvailability()
+    {
+        var crosshairVisible = _settings.ShowCenterCrosshair;
+        var dotStyle = _settings.CrosshairStyle == CrosshairStyle.Dot;
+
+        CrosshairProfileControls.IsEnabled = crosshairVisible;
+        CustomColorControls.IsEnabled = crosshairVisible && _settings.CrosshairColorPreset == CrosshairColorPreset.Custom;
+        InnerLineSection.IsEnabled = crosshairVisible;
+        CrosshairGeometryControls.IsEnabled = crosshairVisible && !dotStyle;
+        OutlineOpacityControls.IsEnabled = crosshairVisible && _settings.CrosshairOutlineThickness > 0;
+        DotAndOuterLinesSection.IsEnabled = crosshairVisible;
+        CenterDotCheckBox.IsEnabled = crosshairVisible && !dotStyle;
+        DotControls.IsEnabled = crosshairVisible && (dotStyle || _settings.ShowCenterDot);
+        OuterLineControls.IsEnabled = crosshairVisible && _settings.ShowOuterCrosshairLines;
+        MovementFadeSection.IsEnabled = crosshairVisible;
+        MovingOpacityControls.IsEnabled = crosshairVisible && _settings.FadeCrosshairWhileMoving;
+        MovementBarsOpacityControls.IsEnabled = _settings.ShowMovementBars;
+        OuterRingControls.IsEnabled = _settings.ShowOuterRing;
     }
 
     private void ShowSection(string section)
@@ -396,6 +427,8 @@ public partial class SettingsWindow : FluentWindow
         _settings.CrosshairOutlineOpacity = 0.8;
         _settings.CenterCrosshairOpacity = 1;
         _settings.ShowCenterDot = false;
+        _settings.CrosshairCenterDotSize = 3;
+        _settings.CrosshairCenterDotOpacity = 1;
         _settings.ShowOuterCrosshairLines = false;
         _settings.FadeCrosshairWhileMoving = false;
     }

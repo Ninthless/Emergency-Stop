@@ -21,6 +21,7 @@ public sealed class AppSettings : INotifyPropertyChanged
     private bool _showOuterCrosshairLines;
     private bool _fadeCrosshairWhileMoving;
     private bool _openSettingsOnStartup;
+    private bool _autoUpdateEnabled = true;
     private SettingsLanguage _settingsLanguage = SettingsLanguage.System;
     private double _indicatorSize = 136;
     private double _overlayOpacity = 0.82;
@@ -48,8 +49,8 @@ public sealed class AppSettings : INotifyPropertyChanged
     private CrosshairColorPreset _crosshairColorPreset = CrosshairColorPreset.Cyan;
     private OuterRingStyle _outerRingStyle = OuterRingStyle.Brackets;
     private int _releaseStopMilliseconds = 105;
-    private int _counterStopMilliseconds = 45;
-    private int _readyFlashMilliseconds = 90;
+    private int _counterStopMilliseconds = 90;
+    private int _readyFlashMilliseconds = 55;
     private double _offsetX;
     private double _offsetY;
 
@@ -143,6 +144,12 @@ public sealed class AppSettings : INotifyPropertyChanged
     {
         get => _openSettingsOnStartup;
         set => SetField(ref _openSettingsOnStartup, value);
+    }
+
+    public bool AutoUpdateEnabled
+    {
+        get => _autoUpdateEnabled;
+        set => SetField(ref _autoUpdateEnabled, value);
     }
 
     public SettingsLanguage SettingsLanguage
@@ -353,6 +360,7 @@ public sealed class AppSettings : INotifyPropertyChanged
         ShowOuterCrosshairLines = settings.ShowOuterCrosshairLines;
         FadeCrosshairWhileMoving = settings.FadeCrosshairWhileMoving;
         OpenSettingsOnStartup = settings.OpenSettingsOnStartup;
+        AutoUpdateEnabled = settings.AutoUpdateEnabled;
         SettingsLanguage = settings.SettingsLanguage;
         IndicatorSize = settings.IndicatorSize;
         OverlayOpacity = settings.OverlayOpacity;

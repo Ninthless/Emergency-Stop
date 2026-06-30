@@ -230,7 +230,7 @@ public sealed class CrosshairElement : FrameworkElement
         switch (Kind)
         {
             case CrosshairStyle.Dot:
-                DrawDot(drawingContext, center, Math.Max(thickness, arm * 0.5), outline, outlineOpacity, 1);
+                DrawDot(drawingContext, center, CenterDotSize, outline, outlineOpacity, CenterDotOpacity);
                 break;
             case CrosshairStyle.Circle:
                 DrawCircle(drawingContext, center, arm, thickness, gap, outline, outlineOpacity);

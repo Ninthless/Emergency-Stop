@@ -6,7 +6,7 @@ namespace EmergencyStop;
 
 public sealed class SettingsStore
 {
-    private const int CurrentSettingsVersion = 7;
+    private const int CurrentSettingsVersion = 9;
 
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -75,6 +75,9 @@ public sealed class SettingsStore
         settings.OpenSettingsOnStartup = version >= 5
             ? dto.OpenSettingsOnStartup ?? settings.OpenSettingsOnStartup
             : false;
+        settings.AutoUpdateEnabled = version >= 9
+            ? dto.AutoUpdateEnabled ?? settings.AutoUpdateEnabled
+            : true;
         settings.SettingsLanguage = ParseEnum(dto.SettingsLanguage, settings.SettingsLanguage);
         settings.IndicatorSize = version >= 5
             ? dto.IndicatorSize ?? settings.IndicatorSize
@@ -108,8 +111,16 @@ public sealed class SettingsStore
         settings.CrosshairColorPreset = ParseEnum(dto.CrosshairColorPreset, settings.CrosshairColorPreset);
         settings.OuterRingStyle = ParseEnum(dto.OuterRingStyle, settings.OuterRingStyle);
         settings.ReleaseStopMilliseconds = dto.ReleaseStopMilliseconds ?? settings.ReleaseStopMilliseconds;
-        settings.CounterStopMilliseconds = dto.CounterStopMilliseconds ?? settings.CounterStopMilliseconds;
-        settings.ReadyFlashMilliseconds = dto.ReadyFlashMilliseconds ?? settings.ReadyFlashMilliseconds;
+        settings.CounterStopMilliseconds = ResolveVersionedDefault(
+            dto.CounterStopMilliseconds,
+            settings.CounterStopMilliseconds,
+            45,
+            version < 8);
+        settings.ReadyFlashMilliseconds = ResolveVersionedDefault(
+            dto.ReadyFlashMilliseconds,
+            settings.ReadyFlashMilliseconds,
+            90,
+            version < 8);
         settings.OffsetX = dto.OffsetX ?? settings.OffsetX;
         settings.OffsetY = dto.OffsetY ?? settings.OffsetY;
         return settings;
@@ -135,6 +146,7 @@ public sealed class SettingsStore
             ShowOuterCrosshairLines = settings.ShowOuterCrosshairLines,
             FadeCrosshairWhileMoving = settings.FadeCrosshairWhileMoving,
             OpenSettingsOnStartup = settings.OpenSettingsOnStartup,
+            AutoUpdateEnabled = settings.AutoUpdateEnabled,
             SettingsLanguage = settings.SettingsLanguage.ToString(),
             IndicatorSize = settings.IndicatorSize,
             OverlayOpacity = settings.OverlayOpacity,
@@ -180,6 +192,16 @@ public sealed class SettingsStore
         return Enum.TryParse(value, true, out T result) ? result : fallback;
     }
 
+    private static int ResolveVersionedDefault(int? value, int currentDefault, int previousDefault, bool shouldMigrate)
+    {
+        if (value is null)
+        {
+            return currentDefault;
+        }
+
+        return shouldMigrate && value == previousDefault ? currentDefault : value.Value;
+    }
+
     private sealed class SettingsDto
     {
         public int? SettingsVersion { get; set; }
@@ -198,6 +220,7 @@ public sealed class SettingsStore
         public bool? ShowOuterCrosshairLines { get; set; }
         public bool? FadeCrosshairWhileMoving { get; set; }
         public bool? OpenSettingsOnStartup { get; set; }
+        public bool? AutoUpdateEnabled { get; set; }
         public string? SettingsLanguage { get; set; }
         public double? IndicatorSize { get; set; }
         public double? OverlayOpacity { get; set; }

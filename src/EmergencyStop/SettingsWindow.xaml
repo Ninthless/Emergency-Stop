@@ -540,125 +540,132 @@
                                                Style="{StaticResource SectionTitle}" />
                                     <CheckBox Content="Show center crosshair"
                                               IsChecked="{Binding ShowCenterCrosshair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Grid Margin="0,8,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="18" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Style" />
-                                            <ComboBox x:Name="CrosshairStyleComboBox"
-                                                      SelectedItem="{Binding CrosshairStyle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="CrosshairProfileControls">
+                                        <Grid Margin="0,8,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="18" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="Style" />
+                                                <ComboBox x:Name="CrosshairStyleComboBox"
+                                                          SelectedItem="{Binding CrosshairStyle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Color" />
+                                                <ComboBox x:Name="CrosshairColorComboBox"
+                                                          SelectedItem="{Binding CrosshairColorPreset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <StackPanel x:Name="CustomColorControls">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Red" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding ElementName=RedSlider, Path=Value, StringFormat={}{0:0}}"
+                                                           Style="{StaticResource ValueText}" />
+                                            </Grid>
+                                            <Slider x:Name="RedSlider"
+                                                    Minimum="0"
+                                                    Maximum="255"
+                                                    TickFrequency="1"
+                                                    IsSnapToTickEnabled="True"
+                                                    Value="{Binding CrosshairRed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Green" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding ElementName=GreenSlider, Path=Value, StringFormat={}{0:0}}"
+                                                           Style="{StaticResource ValueText}" />
+                                            </Grid>
+                                            <Slider x:Name="GreenSlider"
+                                                    Minimum="0"
+                                                    Maximum="255"
+                                                    TickFrequency="1"
+                                                    IsSnapToTickEnabled="True"
+                                                    Value="{Binding CrosshairGreen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Blue" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding ElementName=BlueSlider, Path=Value, StringFormat={}{0:0}}"
+                                                           Style="{StaticResource ValueText}" />
+                                            </Grid>
+                                            <Slider x:Name="BlueSlider"
+                                                    Minimum="0"
+                                                    Maximum="255"
+                                                    TickFrequency="1"
+                                                    IsSnapToTickEnabled="True"
+                                                    Value="{Binding CrosshairBlue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Color" />
-                                            <ComboBox x:Name="CrosshairColorComboBox"
-                                                      SelectedItem="{Binding CrosshairColorPreset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Red" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=RedSlider, Path=Value, StringFormat={}{0:0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="RedSlider"
-                                            Minimum="0"
-                                            Maximum="255"
-                                            TickFrequency="1"
-                                            IsSnapToTickEnabled="True"
-                                            Value="{Binding CrosshairRed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Green" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=GreenSlider, Path=Value, StringFormat={}{0:0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="GreenSlider"
-                                            Minimum="0"
-                                            Maximum="255"
-                                            TickFrequency="1"
-                                            IsSnapToTickEnabled="True"
-                                            Value="{Binding CrosshairGreen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Blue" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=BlueSlider, Path=Value, StringFormat={}{0:0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="BlueSlider"
-                                            Minimum="0"
-                                            Maximum="255"
-                                            TickFrequency="1"
-                                            IsSnapToTickEnabled="True"
-                                            Value="{Binding CrosshairBlue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource SectionCard}">
+                            <Border x:Name="InnerLineSection"
+                                    Style="{StaticResource SectionCard}">
                                 <StackPanel>
                                     <TextBlock Text="Inner lines"
                                                Style="{StaticResource SectionTitle}" />
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Length" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=CrosshairSizeSlider, Path=Value, StringFormat={}{0:0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="CrosshairSizeSlider"
-                                            Minimum="1"
-                                            Maximum="24"
-                                            Value="{Binding CrosshairSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="CrosshairGeometryControls">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Length" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=CrosshairSizeSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="CrosshairSizeSlider"
+                                                Minimum="1"
+                                                Maximum="24"
+                                                Value="{Binding CrosshairSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Thickness" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=CrosshairThicknessSlider, Path=Value, StringFormat={}{0:0.0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="CrosshairThicknessSlider"
-                                            Minimum="1"
-                                            Maximum="6"
-                                            Value="{Binding CrosshairThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Thickness" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=CrosshairThicknessSlider, Path=Value, StringFormat={}{0:0.0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="CrosshairThicknessSlider"
+                                                Minimum="1"
+                                                Maximum="6"
+                                                Value="{Binding CrosshairThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Center gap" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=CrosshairGapSlider, Path=Value, StringFormat={}{0:0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="CrosshairGapSlider"
-                                            Minimum="0"
-                                            Maximum="16"
-                                            Value="{Binding CrosshairGap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Center gap" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=CrosshairGapSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="CrosshairGapSlider"
+                                                Minimum="0"
+                                                Maximum="16"
+                                                Value="{Binding CrosshairGap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
 
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -690,143 +697,154 @@
                                             Maximum="3"
                                             Value="{Binding CrosshairOutlineThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Outline opacity" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=CrosshairOutlineOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="CrosshairOutlineOpacitySlider"
-                                            Minimum="0"
-                                            Maximum="1"
-                                            Value="{Binding CrosshairOutlineOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="OutlineOpacityControls">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Outline opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=CrosshairOutlineOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="CrosshairOutlineOpacitySlider"
+                                                Minimum="0"
+                                                Maximum="1"
+                                                Value="{Binding CrosshairOutlineOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource SectionCard}">
+                            <Border x:Name="DotAndOuterLinesSection"
+                                    Style="{StaticResource SectionCard}">
                                 <StackPanel>
                                     <TextBlock Text="Dot and outer lines"
                                                Style="{StaticResource SectionTitle}" />
-                                    <CheckBox Content="Center dot"
+                                    <CheckBox x:Name="CenterDotCheckBox"
+                                              Content="Center dot"
                                               IsChecked="{Binding ShowCenterDot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Dot size" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=DotSizeSlider, Path=Value, StringFormat={}{0:0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="DotSizeSlider"
-                                            Minimum="1"
-                                            Maximum="8"
-                                            Value="{Binding CrosshairCenterDotSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="DotControls">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Dot size" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=DotSizeSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="DotSizeSlider"
+                                                Minimum="1"
+                                                Maximum="8"
+                                                Value="{Binding CrosshairCenterDotSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Dot opacity" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=DotOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="DotOpacitySlider"
-                                            Minimum="0.05"
-                                            Maximum="1"
-                                            Value="{Binding CrosshairCenterDotOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Dot opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=DotOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="DotOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="1"
+                                                Value="{Binding CrosshairCenterDotOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
 
                                     <CheckBox Content="Outer lines"
                                               IsChecked="{Binding ShowOuterCrosshairLines, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Outer length" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=OuterLineSizeSlider, Path=Value, StringFormat={}{0:0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="OuterLineSizeSlider"
-                                            Minimum="1"
-                                            Maximum="12"
-                                            Value="{Binding OuterCrosshairSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="OuterLineControls">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Outer length" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=OuterLineSizeSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="OuterLineSizeSlider"
+                                                Minimum="1"
+                                                Maximum="12"
+                                                Value="{Binding OuterCrosshairSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Outer thickness" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=OuterLineThicknessSlider, Path=Value, StringFormat={}{0:0.0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="OuterLineThicknessSlider"
-                                            Minimum="1"
-                                            Maximum="6"
-                                            Value="{Binding OuterCrosshairThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Outer thickness" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=OuterLineThicknessSlider, Path=Value, StringFormat={}{0:0.0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="OuterLineThicknessSlider"
+                                                Minimum="1"
+                                                Maximum="6"
+                                                Value="{Binding OuterCrosshairThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Outer gap" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=OuterLineGapSlider, Path=Value, StringFormat={}{0:0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="OuterLineGapSlider"
-                                            Minimum="4"
-                                            Maximum="28"
-                                            Value="{Binding OuterCrosshairGap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Outer gap" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=OuterLineGapSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="OuterLineGapSlider"
+                                                Minimum="4"
+                                                Maximum="28"
+                                                Value="{Binding OuterCrosshairGap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Outer opacity" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=OuterLineOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="OuterLineOpacitySlider"
-                                            Minimum="0.05"
-                                            Maximum="1"
-                                            Value="{Binding OuterCrosshairOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Outer opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=OuterLineOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="OuterLineOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="1"
+                                                Value="{Binding OuterCrosshairOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource SectionCard}">
+                            <Border x:Name="MovementFadeSection"
+                                    Style="{StaticResource SectionCard}">
                                 <StackPanel>
                                     <TextBlock Text="Movement fade"
                                                Style="{StaticResource SectionTitle}" />
                                     <CheckBox Content="Fade crosshair while moving"
                                               IsChecked="{Binding FadeCrosshairWhileMoving, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Moving opacity" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=MovingCrosshairOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="MovingCrosshairOpacitySlider"
-                                            Minimum="0.05"
-                                            Maximum="1"
-                                            Value="{Binding MovingCrosshairOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="MovingOpacityControls">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Moving opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=MovingCrosshairOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="MovingCrosshairOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="1"
+                                                Value="{Binding MovingCrosshairOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -846,6 +864,8 @@
                                               IsChecked="{Binding IsClickThrough, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox Content="Open settings on startup"
                                               IsChecked="{Binding OpenSettingsOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox Content="Automatic updates"
+                                              IsChecked="{Binding AutoUpdateEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </Border>
 
@@ -925,20 +945,22 @@
                                               IsChecked="{Binding ShowStatusBadge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox Content="Direction key labels"
                                               IsChecked="{Binding ShowDirectionPad, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Movement bar opacity" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=MovementBarsOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="MovementBarsOpacitySlider"
-                                            Minimum="0.05"
-                                            Maximum="1"
-                                            Value="{Binding MovementBarsOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="MovementBarsOpacityControls">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Movement bar opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=MovementBarsOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="MovementBarsOpacitySlider"
+                                                Minimum="0.05"
+                                                Maximum="1"
+                                                Value="{Binding MovementBarsOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
 
@@ -948,54 +970,56 @@
                                                Style="{StaticResource SectionTitle}" />
                                     <CheckBox Content="Outer ring"
                                               IsChecked="{Binding ShowOuterRing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock Text="Ring style" />
-                                    <ComboBox x:Name="OuterRingStyleComboBox"
-                                              SelectedItem="{Binding OuterRingStyle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="OuterRingControls">
+                                        <TextBlock Text="Ring style" />
+                                        <ComboBox x:Name="OuterRingStyleComboBox"
+                                                  SelectedItem="{Binding OuterRingStyle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Ring size" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=RingSizeSlider, Path=Value, StringFormat={}{0:0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="RingSizeSlider"
-                                            Minimum="72"
-                                            Maximum="170"
-                                            Value="{Binding OuterRingSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Ring size" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=RingSizeSlider, Path=Value, StringFormat={}{0:0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="RingSizeSlider"
+                                                Minimum="72"
+                                                Maximum="170"
+                                                Value="{Binding OuterRingSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Ring thickness" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=RingThicknessSlider, Path=Value, StringFormat={}{0:0.0}px}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="RingThicknessSlider"
-                                            Minimum="1"
-                                            Maximum="8"
-                                            Value="{Binding OuterRingThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Ring thickness" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=RingThicknessSlider, Path=Value, StringFormat={}{0:0.0}px}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="RingThicknessSlider"
+                                                Minimum="1"
+                                                Maximum="8"
+                                                Value="{Binding OuterRingThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Ring opacity" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ElementName=RingOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
-                                                   Style="{StaticResource ValueText}" />
-                                    </Grid>
-                                    <Slider x:Name="RingOpacitySlider"
-                                            Minimum="0.15"
-                                            Maximum="1"
-                                            Value="{Binding OuterRingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Ring opacity" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ElementName=RingOpacitySlider, Path=Value, StringFormat={}{0:P0}}"
+                                                       Style="{StaticResource ValueText}" />
+                                        </Grid>
+                                        <Slider x:Name="RingOpacitySlider"
+                                                Minimum="0.15"
+                                                Maximum="1"
+                                                Value="{Binding OuterRingOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
