@@ -53,7 +53,7 @@ public sealed class MovementStateService
         var snapshot = new MovementSnapshot(
             state,
             BuildStatusText(state),
-            BuildDetailText(state, directionText),
+            BuildDetailText(state, directionText, _settings.SettingsLanguage),
             directionText,
             progress,
             _pressedKeys.Contains(_settings.ForwardKey),
@@ -193,16 +193,23 @@ public sealed class MovementStateService
         };
     }
 
-    private static string BuildDetailText(MovementIndicatorState state, string directionText)
+    private static string BuildDetailText(MovementIndicatorState state, string directionText, SettingsLanguage language)
     {
+        var useChinese = SettingsLocalization.Resolve(language) == SettingsLanguage.Chinese;
+
+        if (state == MovementIndicatorState.Moving && !string.IsNullOrWhiteSpace(directionText))
+        {
+            return directionText;
+        }
+
         return state switch
         {
-            MovementIndicatorState.Moving => string.IsNullOrWhiteSpace(directionText) ? "移动中" : directionText,
-            MovementIndicatorState.Stopping => "自然减速",
-            MovementIndicatorState.CounterStrafing => "反向急停",
-            MovementIndicatorState.Ready => "可开枪",
-            MovementIndicatorState.Conflict => "按键冲突",
-            _ => "待机"
+            MovementIndicatorState.Moving => useChinese ? "移动中" : "Moving",
+            MovementIndicatorState.Stopping => useChinese ? "自然减速" : "Release stop",
+            MovementIndicatorState.CounterStrafing => useChinese ? "反向急停" : "Counter-strafe",
+            MovementIndicatorState.Ready => useChinese ? "可开枪" : "Ready",
+            MovementIndicatorState.Conflict => useChinese ? "按键冲突" : "Key conflict",
+            _ => useChinese ? "待机" : "Idle"
         };
     }
 
@@ -270,6 +277,7 @@ public sealed class MovementStateService
                         Math.Clamp(elapsed / settings.ReleaseStopMilliseconds, 0, 1));
                 }
 
+                _lastDirection = 0;
                 return new AxisSnapshot(MovementIndicatorState.Ready, 1);
             }
 
