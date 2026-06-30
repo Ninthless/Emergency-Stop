@@ -1,14 +1,14 @@
 # Emergency Stop
 
-一个面向 VALORANT / 无畏契约练习场景的 Windows 屏幕急停指示器。它通过读取本机移动键状态，在屏幕中心显示一个轻量、空心、不遮挡准星的急停状态提示。
+一个面向 VALORANT / 无畏契约练习场景的 Windows 屏幕急停指示器和外置准星。它通过读取本机移动键状态，在屏幕中心显示可高度自定义的准星、移动提示和急停状态。
 
 ## 设计目标
 
 - 在屏幕中心显示 `MOVE`、`STOP`、`BRAKE`、`READY`、`BOTH` 等移动状态
-- 中心区域保持留白，让游戏内准星露出来
+- 可以直接隐藏游戏内准星，使用本工具绘制的外置准星
 - 仅监听本机键盘输入，不读取游戏进程、不注入、不抓包、不自动按键
 - 通过系统托盘右键打开设置、显示/隐藏覆盖层、切换鼠标穿透
-- 支持自定义移动键位、尺寸、透明度、偏移和急停估算窗口
+- 支持自定义准星形状、颜色、内线、外线、中心点、外圈、移动淡化、键位、尺寸、透明度、偏移和急停估算窗口
 
 ## 合规边界
 
@@ -32,8 +32,13 @@ Riot / 腾讯 / Vanguard 的规则和检测策略可能变化，最终解释权�
 
 ## 功能
 
-- 空心环形中心指示器，默认不遮挡游戏准星
-- 四方向小条显示移动键激活状态
+- 默认准星采用 VALORANT 常见职业小十字起点：青色、静态、内线 `1 / 4 / 2 / 2`、无中心点、无外线
+- 支持准星样式：Classic、Dot、Circle、TShape、Box、Corners、Diamond、Chevron
+- 支持颜色预设、状态色和自定义 RGB
+- 支持中心点、外线、轮廓厚度、轮廓透明度、移动时自动降低准星透明度
+- 支持外圈样式：Circle、Brackets、Corners、Ticks
+- 四方向小条显示移动键激活状态，可独立显示/隐藏和调节透明度
+- 设置页使用 WPF UI 风格外壳和简洁紧凑的黑白布局，跟随 Windows 亮色/暗色切换，并支持中文/英文
 - Raw Input + `GetAsyncKeyState` 双通道键盘状态读取
 - 默认键位：`W`、`A`、`S`、`D`
 - 默认状态：
@@ -81,6 +86,10 @@ src\EmergencyStop\bin\Release\net9.0-windows\win-x64\publish\EmergencyStop.exe
 - Windows
 - .NET 9 SDK
 
+NuGet 依赖：
+
+- `WPF-UI`：设置页窗口外壳、主题资源和现代 WPF 基础设施
+
 构建：
 
 ```powershell
@@ -104,6 +113,8 @@ src/
     App.xaml / App.xaml.cs              应用启动、托盘、覆盖层生命周期
     OverlayWindow.xaml                  屏幕中心覆盖层 UI
     OverlayViewModel.cs                 覆盖层显示状态
+    CrosshairElement.cs                 自绘准星
+    OuterRingElement.cs                 自绘外圈
     MovementStateService.cs             移动键状态机
     RawInputKeyboardListener.cs         Raw Input 键盘监听
     KeyboardStatePoller.cs              物理按键状态轮询
@@ -125,6 +136,22 @@ VALORANT 没有公开完整的玩家移动速度曲线。本项目不会声称�
 - 松键急停估算
 - 反向急停估算
 - `READY` 闪烁窗口
+
+## 默认准星说明
+
+VALORANT 没有唯一“最好”的准星。项目默认值选择的是主流职业玩家常见的小型静态十字方案：青色、高对比、关闭中心点、关闭外线、关闭移动淡化。它适合作为起点，再根据分辨率、准星缩放习惯和个人视力调整。
+
+默认核心参数：
+
+- 样式：`Classic`
+- 颜色：`Cyan`
+- 内线长度：`4`
+- 内线厚度：`2`
+- 中心间隙：`2`
+- 轮廓厚度：`0`
+- 中心点：关闭
+- 外线：关闭
+- 移动时淡化：关闭
 
 ## 许可证
 
