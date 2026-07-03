@@ -9,6 +9,7 @@ namespace EmergencyStop;
 public sealed class UpdateService
 {
     private const string RepositoryUrl = "https://github.com/Ninthless/Emergency-Stop";
+    private const string ReleasesUrl = $"{RepositoryUrl}/releases";
 
     private readonly AppSettings _settings;
     private readonly Action _saveNow;
@@ -100,7 +101,7 @@ public sealed class UpdateService
 
             if (userInitiated)
             {
-                ShowError("Unable to check for updates.");
+                ShowUpdateFailure("Unable to check for updates.", exception);
             }
 
             return null;
@@ -120,7 +121,7 @@ public sealed class UpdateService
 
             if (userInitiated)
             {
-                ShowError("Unable to download the update.");
+                ShowUpdateFailure("Unable to download the update.", exception);
             }
 
             return false;
@@ -164,12 +165,41 @@ public sealed class UpdateService
             MessageBoxImage.Information);
     }
 
-    private void ShowError(string text)
+    private void ShowUpdateFailure(string text, Exception exception)
     {
-        MessageBox.Show(
+        var baseException = exception.GetBaseException();
+        var message = string.Join(
+            Environment.NewLine + Environment.NewLine,
             SettingsLocalization.Text(text, _settings.SettingsLanguage),
+            $"{SettingsLocalization.Text("Reason", _settings.SettingsLanguage)}: {baseException.Message}",
+            SettingsLocalization.Text("Open the GitHub releases page?", _settings.SettingsLanguage));
+
+        var result = MessageBox.Show(
+            message,
             SettingsLocalization.Text("Emergency Stop Update", _settings.SettingsLanguage),
-            MessageBoxButton.OK,
+            MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            OpenReleasesPage();
+        }
+    }
+
+    private void OpenReleasesPage()
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = ReleasesUrl,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine(exception);
+            ShowInfo("Unable to open the GitHub releases page.");
+        }
     }
 }
